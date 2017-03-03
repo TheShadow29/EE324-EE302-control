@@ -1,89 +1,80 @@
-int ref = 900;
-float sum_error = 0;
-float present_error;
-float old_error;
-const int outPin1= 8;
-const int outPin2 = 9;
-int pot_val_init;
-int pot_val_fin;
-int some_const_value;
-void setup()
+int motorPin1 = 8;
+int motorPin2 = 9;
+int inputPin = A0;
+
+int zero = 0;
+
+int sensorValue = 0;
+int outputValue = 0;
+int targetValue;
+int prev = 0;
+int diff = 0; int acc = 0;
+
+// PID constants
+float kp = 15, kd = 10, ki = 0.0001;
+int calib = 512;
+
+void setup() 
 {
-	Serial.begin(9600);
-	pinMode(outPin1, OUTPUT);
-	pinMode(outPin2, OUTPUT);
-	delay(5000);
-  pot_val_init = analogRead(A1);
-  pot_val_fin = pot_val_init + some_const_value;
-}
-
-void loop()
-{
-  int pot_val = analogRead(A1);
-  old_error = present_error;
-  present_error = pot_val - pot_val_fin;
-
-  float out_volt = pid(old_error,present_error);
-//  Serial.print("Pot val ");
-//  Serial.println(pot_val);
-//  Serial.print("Error ");
-//  Serial.println(present_error);
-//  Serial.print("Out volt ");
-//  Serial.println(out_volt);
-
-  if (out_volt < 0)
+  Serial.begin(9600);
+  pinMode(inputPin, INPUT);
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  
+  sensorValue = analogRead(inputPin);
+  if(sensorValue > calib)
   {
-    analogWrite(outPin1, int(-out_volt));
-    analogWrite(outPin2, 0);
+    targetValue = sensorValue - calib;
   }
   else
   {
-    analogWrite(outPin1, 0);
-    analogWrite(outPin2, int(out_volt));
+    targetValue = sensorValue + calib;
   }
+    
+  prev = targetValue - sensorValue;
+  acc = prev;
+  Serial.println();
 }
 
-//void loop()
-//{
-//	// put your main code here, to run repeatedly:
-//	int pot_val = analogRead(A1);
-//	delay(4);
-//	old_error = present_error;
-//	present_error = pot_val -ref;
-//	
-//	float out_volt = pid(old_error, present_error);
-//	Serial.print("Pot val ");
-//	Serial.println(pot_val);
-//	Serial.print("Error ");
-//	Serial.println(present_error);
-//	Serial.print("Out volt ");
-//	Serial.println(out_volt);
-//  
-////  Serial.print("Out Val");
-////  Serial.println(out_volt);
-//
-//	if (out_volt < 0)
-//	{
-//		analogWrite(outPin1, int(-out_volt));
-//		analogWrite(outPin2, 0);
-//	}
-//	else
-//	{
-//		analogWrite(outPin2, int(out_volt));
-//		analogWrite(outPin1, 0);
-//	}
-//
-//}
-
-float pid(float old_err, float present_err)
+void loop() 
 {
-	float kp, ki, kd;
-	kp = 1;
-	ki = 0.06;
-	kd = 1;
-	float diff_error = present_err - old_err;
-	sum_error += present_err;
-	float out_v = kp * present_err + ki * sum_error + kd * diff_error;
-	return out_v;
-}
+  
+  sensorValue = analogRead(inputPin);
 
+ 
+  int err = targetValue - sensorValue;
+  
+  acc = acc + err;
+  diff = err - prev;
+
+//  /Serial.print("Error ");
+//  Ser/ial.println(err);
+  
+  
+ outputValue = (int)abs(kp*err + kd*diff + ki*acc); 
+ if(outputValue > 255)
+ {
+  outputValue = 255;
+ }
+ 
+  if (err>0)
+  {
+    analogWrite(motorPin1, outputValue);
+    analogWrite(motorPin2, zero);
+    //digitalWrite(motorPin1, HIGH);
+    //digitalWrite(motorPin2, LOW);
+  }
+  else
+  {
+    analogWrite(motorPin2, outputValue);
+    analogWrite(motorPin1, zero);
+   // digitalWrite(motorPin2, HIGH);
+   // digitalWrite(motorPin1, LOW);
+  
+  }
+  prev = err;
+ // Serial.print(millis()); Serial.print("  ");
+  //Serial.println(err);
+  
+  Serial.println((calib - abs(err))*180.0/calib );
+}
