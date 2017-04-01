@@ -1,4 +1,4 @@
-function [ret_vec] = overshootAndSettling(p, z, OS, time,time_type, str, arg1, arg2)
+function [ret_vec] = all_compensator_with_zw(sysL, zeta,wn, str, arg1, arg2)
 % This the function to evaluate the constant K and the closed loop poles for the given 
 % criteria of overshoot and settling time
 % p is a vector containing the poles of the transfer function
@@ -9,17 +9,21 @@ function [ret_vec] = overshootAndSettling(p, z, OS, time,time_type, str, arg1, a
 % arg1 and arg2 are required for some cases
 
 % Determine the location of the pole given the specifications
-tan_phi = (-pi/log(OS));
-if(strcmp(time_type,'settling'))
-    x_intercept = 4.6/time;
-elseif(strcmp(time_type,'rise'))
-    wn = 1.8/time;
-    zeta = cos(atan(tan_phi));
-    x_intercept = zeta*wn;
-end
- 
+% tan_phi = (-pi/log(OS));
+% if(strcmp(time_type,'settling'))
+%     x_intercept = 4.6/time;
+% elseif(strcmp(time_type,'rise'))
+%     wn = 1.8/time;
+%     zeta = cos(atan(tan_phi));
+%     x_intercept = zeta*wn;
+% end
+[z,p,k] = zpkdata(sysL);
+z = cell2mat(z);
+p = cell2mat(p);
+x_intercept = zeta*wn;
 
-req_pole = -x_intercept + x_intercept*tan_phi*1i;
+% req_pole = -x_intercept + x_intercept*tan_phi*1i;
+req_pole = -x_intercept + 1i*wn*sqrt(1-zeta^2);
 
 % Determine the angles from the original poles
 angle_zeros = zeros(size(z));

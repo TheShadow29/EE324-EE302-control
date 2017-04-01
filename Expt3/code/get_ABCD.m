@@ -19,6 +19,7 @@ function [A,B,C,D] = get_ABCD()
     
     A = zeros(4,4);
     A(1,3) = 1;
+    A(2,4) = 1;
     
     A(3,2) = (r * M_p^2 * l_p^2 * g)/(J_p * J_eq + M_p*l_p^2 * J_eq + J_p*M_p * r^2);
    
