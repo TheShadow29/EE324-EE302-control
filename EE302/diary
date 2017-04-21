@@ -1,0 +1,18 @@
+help diary
+ <strong>diary</strong> Save text of MATLAB session.
+    <strong>diary</strong> FILENAME causes a copy of all subsequent command window input
+    and most of the resulting command window output to be appended to the
+    named file.  If no file is specified, the file 'diary' is used.
+ 
+    <strong>diary</strong> OFF suspends it. 
+    <strong>diary</strong> ON turns it back on.
+    <strong>diary</strong>, by itself, toggles the diary state.
+ 
+    Use the functional form of <strong>diary</strong>, such as <strong>diary</strong>('file'),
+    when the file name is stored in a string.
+ 
+    See also <a href="matlab:help save">save</a>.
+
+    <a href="matlab:doc diary">Reference page for diary</a>
+
+diary off

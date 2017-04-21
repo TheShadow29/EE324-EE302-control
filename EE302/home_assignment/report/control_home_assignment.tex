@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage[a4paper, tmargin=1in, bmargin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{pdflscape}
+\usepackage{listings}
+\usepackage{amsmath}
+
+% \usepackage{float}
+% \usepackage{hyperref}
+% \usepackage{titlesec}
+
+\newcommand{\ra}{$\rightarrow$}
+
+\newenvironment{question}[2][Question]{\begin{trivlist}
+  \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2:}]}{\end{trivlist}}
+\newenvironment{answer}[2][Answer]{\begin{trivlist}
+  \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2:}]}{\end{trivlist}}
+
+
+\title{EE 302 : Control System Home Assignment}
+\author{
+  Arka Sadhu - 140070011\\
+  Sudeep Salgia - 14D070011\\
+  Parth Kothari - 14D070019\\
+}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{question}{1} What is the transfer function $\frac{Y(s)}{R(s)}$ of the system in Figure 1?
+\end{question}
+\begin{answer} a
+  \begin{equation}
+    \label{eq:1}
+    m_1\ddot{x} = k_s(y-x) + b(\dot{y} - \dot{x}) + k_w(r(t) - x)
+  \end{equation}
+  \begin{equation}
+    \label{eq:2}
+    m_2\ddot{y} = k_s(x-y) + b(\dot{x} - \dot{y}) 
+  \end{equation}
+\end{answer}
+
+The transfer function
+$$m_1s^2X(s) = k_s[Y(s) - X(s]) + bs[Y(s) - X(s)] + k_w[R(s) - X(s)]$$
+$$m_2s^2 Y(s) = k_s[X(s) - Y(s)] + bs[X(s) - Y(s)]$$
+
+$$[m_1s^2 + bs + (k_s+k_w)]X(s) = [bs + k_s]Y(s) + k_wR(s)$$
+$$[m_2s^2 + k_s + bs]Y(s) = [k_s + bs]X(s)$$
+$$[m_1s^2 + bs + (k_s + k_w)]X(s) = [bs + k_s]Y(s) + k_wR(s)$$
+$$\frac{[m_1s^2 + bs + (k_s + k_w)]}{[k_s + bs]}[m_2s^2 + k_s + bs - (k_s + bs)^2]Y(s) = k_w(k_s+ bs)R(s)$$
+$$\frac{Y(s)}{R(s)} = \frac{ k_w(k_s+ bs)}{[m_1s^2 + bs + (k_s + k_w)][m_2s^2 + k_s + bs] - (k_s + bs)^2}$$
+\begin{answer}b
+  $$\dot{p} = Ap + Br$$
+  $$y = Cp + Dr$$
+  Here
+  \[
+    p = \begin{bmatrix}
+      x \\
+      \dot{x}\\
+      y\\
+      \dot{y}
+    \end{bmatrix}
+  \]
+  $$A = \left(\begin{array}{cccc} 0 & 1 & 0 & 0\\ -\frac{k_{s} + k_{w}}{m_{1}} & -\frac{b}{m_{1}} & \frac{k_{s}}{m_{1}} & \frac{b}{m_{1}}\\ 0 & 0 & 0 & 1\\ \frac{k_{s}}{m_{2}} & \frac{b}{m_{2}} & -\frac{k_{s}}{m_{2}} & -\frac{b}{m_{2}} \end{array}\right)$$
+
+  $$B = \left(\begin{array}{c} 0\\ \frac{k_{w}}{m_{1}}\\ 0\\ 0 \end{array}\right)$$
+  \[
+    C =
+    \begin{bmatrix}
+      0 & 0 & 1 & 0
+    \end{bmatrix}
+  \]
+  $$ D = 0$$
+\end{answer}
+
+\begin{answer}c
+  From state space to Transfer function we use
+  $$G(s) = C(sI - A)^{-1}B$$
+  We get
+  $$G(s) = \frac{k_{w}\, \left(k_{s} + b\, s\right)}{k_{s}\, k_{w} + b\, m_{1}\, s^3 + b\, m_{2}\, s^3 + k_{s}\, m_{1}\, s^2 + k_{s}\, m_{2}\, s^2 + k_{w}\, m_{2}\, s^2 + m_{1}\, m_{2}\, s^4 + b\, k_{w}\, s}$$
+  which is the same as that in part(a).
+
+\end{answer}
+
+\begin{answer}d
+  Controller Canonical Form of the matrix is
+  $$A_{ccf} = \left(\begin{array}{cccc} -\frac{b\, m_{1} + b\, m_{2}}{m_{1}\, m_{2}} & -\frac{k_{s}\, m_{1} + k_{s}\, m_{2} + k_{w}\, m_{2}}{m_{1}\, m_{2}} & -\frac{b\, k_{w}}{m_{1}\, m_{2}} & -\frac{k_{s}\, k_{w}}{m_{1}\, m_{2}}\\ 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \end{array}\right)$$
+\end{answer}
+
+\begin{answer}e
+  \begin{equation}
+    \label{eq:3}
+    \ddot{x} + \frac{b}{m_1}(\dot{x} - \dot{y}) + \frac{k_s}{m_1}(x - y) + \frac{k_w}{m_1}x = \frac{k_w}{m_1}r - \frac{f_{act}}{m_1}
+  \end{equation}
+  \begin{equation}
+    \label{eq:4}
+    \ddot{y} + \frac{b}{m_2}(\dot{y} - \dot{x}) + \frac{k_s}{m_2}(y - x) = \frac{f_{act}}{m_2}
+  \end{equation}
+
+\end{answer}
+\begin{answer}f
+  $$\dot{p} = Ap + B_1r + B_2f_{act}$$
+  $$ y = Cp + D_1r + D_2r$$
+
+  A will remain the same as in (c) and $B_1$ will be same as $B$.
+  \[
+    B_2 =
+    \begin{bmatrix}
+      0\\
+      \frac{-1}{m_1}\\
+      0\\
+      \frac{1}{m_2}
+      
+    \end{bmatrix}
+  \]
+  Both $D_1$ and $D_2$ will remain the same.  
+\end{answer}
+\begin{answer}g
+  The solution with $f_{act} = 0$ is
+  $$p(t) = e^{At}p(0) + \int_0^t e^{A(t-\tau)}B_1r(\tau)d\tau$$
+  Impulse response with initial condition $p(0) = 0$ is
+  $$p(t) = \int_0^t e^{A(t-\tau)}B_1r(\tau)d\tau = \int_0^t e^{A(t-\tau)}B_1\delta(\tau)d\tau$$
+  $$p(t) = e^{At}B_1$$
+  The response of the system with $r = 0$ and initial condition $B_1$ is
+  $$p(t) = e^{At}p(0) = e^{At}B_1$$
+  
+\end{answer}
+\begin{answer}h
+  
+\end{answer}
+\end{document}
+
