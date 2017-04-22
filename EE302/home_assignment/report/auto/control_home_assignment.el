@@ -16,14 +16,25 @@
     "parskip"
     "pdflscape"
     "listings"
-    "amsmath")
+    "amsmath"
+    "float"
+    "hyperref"
+    "fp"
+    "siunitx")
    (TeX-add-symbols
+    "ConverFracToDecimal"
     "ra")
    (LaTeX-add-labels
+    "fig:1"
+    "fig:2"
     "eq:1"
     "eq:2"
     "eq:3"
-    "eq:4")
+    "eq:4"
+    "eq:5"
+    "eq:6"
+    "eq:7"
+    "eq:8")
    (LaTeX-add-environments
     '("answer" LaTeX-env-args ["argument"] 1)
     '("question" LaTeX-env-args ["argument"] 1)))
