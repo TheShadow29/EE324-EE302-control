@@ -73,3 +73,7 @@ Kobs_actual = (Kobs_val*Tobs_inv_val)';
 
 Aobs_updated = A_val - Kobs_actual*C;
 
+A_big = [A_val , -B2_val*K_actual; Kobs_actual*C, A_val - B2_val*K_actual - Kobs_actual*C];
+sys_big = ss(A_big, [B_val;B_val], [C ,zeros(1,4)], 0);
+
+
