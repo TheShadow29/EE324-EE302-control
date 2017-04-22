@@ -16,7 +16,7 @@
 \newcommand{\ConverFracToDecimal}{%
     \renewcommand*{\frac}[2]{%
         \FPdiv\Result{##1}{##2}%
-        \num[round-mode=places,round-precision=3]{\Result}%
+        \num[round-mode=places,round-precision=4]{\Result}%
     }%
 }%
 
@@ -192,7 +192,7 @@
 
 \begin{answer}h
   To get peak overshoot $M=2.5\%$ and settling time $t_s = 0.39sec$, using second order approximation, we get the poles to be placed as
-  $$p_1 = -11.7949 +j 10.0450$$
+  $$p_1 = -11.7949 -j 10.0450$$
   $$p_2 = -11.7949 -j 10.0450$$
   % asdf
   The other two poles to be placed are at $$p_3 = -60$$ $$p_4 = -100$$
@@ -209,27 +209,11 @@
   $$A_{ccf} = \left(\begin{array}{cccc} -129.0333 & -14211.667 & -81666.6667 & -1083333.3333 \\ 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \end{array}\right)$$
 
   So we find $K_{reqd\_canonical}$ as
-  $$K_{reqd\_canonical} = first\_row(A_{ccf} - A_{reqd\_canonical}) = \left(\begin{array}{cccc} 54.5564667 & -4197.27697 & 98275.6038 & 356796.81272 \end{array}\right)$$
+  $$K_{reqd\_canonical} = A_{ccf} - A_{reqd\_canonical} = \left(\begin{array}{cccc} 54.5564667 & -4197.27697 & 98275.6038 & 356796.81272 \end{array}\right)$$
 
   Now we convert this K to our current form, by multiplying $T^{-1}$ where $T$ is the transformation matrix required to transform the state space to control canonical form.
-  \[
-    C_2 =
-  \begin{bmatrix}
-    B_2 & AB_2 & A^2B_2 &A^3B_3
-  \end{bmatrix}
-\]
-
-\[
-  \hat{C_2} =
-  \begin{bmatrix}
-    \hat{B_2} & \hat{A}\hat{B_2} &\hat{A^2B_2} &\hat{A^3B_3}    
-  \end{bmatrix}
-\]
-
-  $$T = C_2\hat{C_2}^{-1}$$
   $$K = K_{reqd\_canonical}T^{-1} = \ConverFracToDecimal \left(\begin{array}{cccc} \frac{2903961887049187}{8589934592} & - \frac{1026821118672775}{274877906944} & \frac{5884533665195789}{137438953472} & \frac{1620827538137813}{137438953472} \end{array}\right)$$
   The new A is given as
-  $$A_{state\_feedback} = A - B_2K$$
   $$A_{state\_feedback} =\ConverFracToDecimal \left(\begin{array}{cccc} 0 & 1 & 0 & 0\\ - \frac{2721065680764325}{274877906944} & - \frac{744124921344795}{4398046511104} & \frac{2375159761655579}{1099511627776} & \frac{4748366851461461}{17592186044416}\\ 0 & 0 & 0 & 1\\ - \frac{610054959817109}{4398046511104} & \frac{5079892796380467}{562949953421312} & - \frac{8107211986451043}{70368744177664} & - \frac{4051939713247113}{281474976710656} \end{array}\right)$$
 \end{answer}
 
@@ -238,12 +222,11 @@
 
   On replacing the corresponding values $k_w = 1000000$, $k_s = 130000$, $b = 9800$, $m_1 = 80$, $m_2 = 1500$, we get 
 
-  $$ A_{obs} =  \ConverFracToDecimal \left(\begin{array}{cccc} - \frac{3871}{30} & - \frac{42635}{3} & - \frac{245000}{3} & - \frac{3250000}{3}\\ 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \end{array}\right) $$ 
+  $$ A_obs =  \ConverFracToDecimal \left(\begin{array}{cccc} - \frac{3871}{30} & - \frac{42635}{3} & - \frac{245000}{3} & - \frac{3250000}{3}\\ 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \end{array}\right) $$ 
 
 
   
 \end{answer}
-
 \begin{answer}j
 The observer design problem can be treated in the same way as the pole placement problem with for the system matrix in observer canonical form and for this specific case, we need to place the poles at $ -60, -100, -300 $ and $ -400$. Hence the required transfer function is $$G(s) = s^4 + 860s^3 + 23800s^2 + 23400000s^1 + 720000000$$ 
 and hence the corresponding required $A$ matrix in the observer canonical form is $$A_{reqd\_observer} = \left(\begin{array}{cccc} - 860 & 1 & 0 & 0 \\ -23800 & 0 & 1 & 0\\ -23400000 & 0 & 0 & 1\\ -720000000 & 0 & 0 & 0 \end{array}\right)$$
@@ -258,109 +241,18 @@ Thus using the same procedure as adopted in the case for pole placement problem,
 $$ A_{state_feedback} =\ConverFracToDecimal  \left(\begin{array}{cccc} 0 & 1 & - \frac{1877807075575657}{137438953472} & 0\\ -14125 & - \frac{245}{2} & \frac{1334930402236375}{2147483648} & \frac{245}{2}\\ 0 & 0 & - \frac{21929}{30} & 1\\ \frac{260}{3} & \frac{98}{15} & - \frac{4451508011532871}{34359738368} & - \frac{98}{15} \end{array}\right) $$
 \end{answer}
 
-\begin{answer}k
-  % The final closed loop state space representation is hence of the form
-  We define 
-  $$P_{fb} = \left(\begin{array}{c} \dot{p} \\ \dot{\hat{p}} \\  \end{array}\right)$$ 
-  $$A_{fb} = \left(\begin{array}{cc} A & -B_2F \\ KC & A - KC - B_2F \\ \end{array} \right)$$
-  $$B_{fb} = \left(\begin{array}{c} B_1\\B_1\\ \end{array} \right)$$
-  $$C_{fb} = \left(\begin{array}{cc} C - D_2F & 0 \\ \end{array} \right)$$
-  $$D_{fb} = D_1$$
-  % $$\left(\begin{array}{c} \dot{p} \\ \dot{\hat{p}} \\  \end{array}\right) = \left(\begin{array}{cc} A & -B_2F \\ KC & A - KC - B_2F \\ \end{array} \right) \left(\begin{array}{c} p \\ \hat{p}\\ \end{array} \right) + \left(\begin{array}{c} B_1\\B_1\\ \end{array} \right)r$$
-  $$\dot{P_{fb}} = A_{fb}P_{fb} + B_{fb}r$$ 
-  $$ y = C_{fb}p + D_{fb}r $$
-  $$ A_{fb} = \ConverFracToDecimal \left(\begin{array}{cccccccc} 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\ -14125 & - \frac{245}{2} & 1625 & \frac{245}{2} & \frac{4646339019278699}{1099511627776} & - \frac{205364223734555}{4398046511104} & \frac{4707626932156631}{8796093022208} & \frac{2593324061020501}{17592186044416}\\ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\ \frac{260}{3} & \frac{98}{15} & - \frac{260}{3} & - \frac{98}{15} & - \frac{3964875963117823}{17592186044416} & \frac{700976550347281}{281474976710656} & - \frac{251073436381687}{8796093022208} & - \frac{4425939730808321}{562949953421312}\\ 0 & 0 & \frac{1877807075575657}{137438953472} & 0 & 0 & 1 & - \frac{1877807075575657}{137438953472} & 0\\ 0 & 0 & - \frac{1331440741308375}{2147483648} & 0 & - \frac{2721065680764325}{274877906944} & - \frac{744124921344795}{4398046511104} & \frac{2672159450435717}{4294967296} & \frac{4748366851461461}{17592186044416}\\ 0 & 0 & \frac{21929}{30} & 0 & 0 & 0 & - \frac{21929}{30} & 1\\ 0 & 0 & \frac{8897060335081955}{68719476736} & 0 & - \frac{610054959817109}{4398046511104} & \frac{5079892796380467}{562949953421312} & - \frac{4452488767143737}{34359738368} & - \frac{4051939713247113}{281474976710656} \end{array}\right)$$
-  $$ B_{fb} = \ConverFracToDecimal \left(\begin{array}{c} 0\\ 12500\\ 0\\ 0\\ 0\\ 12500\\ 0\\ 0 \end{array}\right)$$
-  $$ C_{fb} = \left(\begin{array}{cccccccc} 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \end{array}\right)$$
-  $$ D_{fb} = 0 $$
-% $$ \ConverFracToDecimal \left(\begin{array}{c} \dot{p} \\ \dot{\hat{p}} \\  \end{array}\right) = \left(\begin{array}{cccccccc} 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\ -14125 & - \frac{245}{2} & 1625 & \frac{245}{2} & \frac{4646339019278699}{1099511627776} & - \frac{205364223734555}{4398046511104} & \frac{4707626932156631}{8796093022208} & \frac{2593324061020501}{17592186044416}\\ 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\ \frac{260}{3} & \frac{98}{15} & - \frac{260}{3} & - \frac{98}{15} & - \frac{3964875963117823}{17592186044416} & \frac{700976550347281}{281474976710656} & - \frac{251073436381687}{8796093022208} & - \frac{4425939730808321}{562949953421312}\\ 0 & 0 & \frac{1877807075575657}{137438953472} & 0 & 0 & 1 & - \frac{1877807075575657}{137438953472} & 0\\ 0 & 0 & - \frac{1331440741308375}{2147483648} & 0 & - \frac{2721065680764325}{274877906944} & - \frac{744124921344795}{4398046511104} & \frac{2672159450435717}{4294967296} & \frac{4748366851461461}{17592186044416}\\ 0 & 0 & \frac{21929}{30} & 0 & 0 & 0 & - \frac{21929}{30} & 1\\ 0 & 0 & \frac{8897060335081955}{68719476736} & 0 & - \frac{610054959817109}{4398046511104} & \frac{5079892796380467}{562949953421312} & - \frac{4452488767143737}{34359738368} & - \frac{4051939713247113}{281474976710656} \end{array}\right) + \left(\begin{array}{c} 0\\ 12500\\ 0\\ 0\\ 0\\ 12500\\ 0\\ 0 \end{array}\right) r $$
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{images/Control_flow_chart}
-    \caption{Block Diagram of Entire Closed Loop System}
-    \label{fig:k.2}
-  \end{figure}
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{images/part_k_step_response}
-    \caption{Step Response of the system}
-    \label{fig:k.3}
-  \end{figure}
-  
-\end{answer}
-
 \begin{answer}l
   The performance index to be minimized is
   $$J = \int_0^\infty 2y^2(t) + f_{act}^2(t)dt$$
-  This can be solved using the theory of Symmetric Root Locus (section 7.6.2 Powell 7th Edition), which provides solution of minimization the following performance index.
+  This can be solved using the theory of Symmetric Root Locus, which provides solution of minimization the following performance index.
   $$J = \int_0^\infty \rho y^2(t) + f_{act}^2(t)dt$$
-  where $f_{act} = -Fp$.\\
-  The optimal value of F is that which places the closed-loop poles at the stable roots (those in the LHP) of the symmetric root-locus (SRL) equation
+  where $f_{act} = -Kp$.\\
+  The optimal value of K is that which places the closed-loop poles at the stable roots (those in the LHP) of the symmetric root-locus (SRL) equation
   $$1 + \rho G_0(-s)G_0(s) = 0$$
   where
   $$G_0(s) = \frac{Y(s)}{f_{act}(s)} = C(sI - A)^{-1}B_2$$
-  We get
-  $$G_0(s) = \frac{m_{1}\, s^2 + k_{w}}{k_{s}\, k_{w} + b\, m_{1}\, s^3 + b\, m_{2}\, s^3 + k_{s}\, m_{1}\, s^2 + k_{s}\, m_{2}\, s^2 + k_{w}\, m_{2}\, s^2 + m_{1}\, m_{2}\, s^4 + b\, k_{w}\, s}$$
-  Putting in the values, we get
-  $$G_0(s) = \frac{s^2 + 12500}{1500\, s^4 + 193550\, s^3 + 21317500\, s^2 + 122500000\, s + 1625000000}$$
-
-  We first find the poles of $$ 1 + \rho G_0(s) G_0(-s) = 0$$
-  which is $$1 + 2G_0(s)G_0(s) = 0$$.
-  The poles are
-  \[
-    poles =
-    \begin{bmatrix}
-      -61.8550 +98.2175i\\
-      -61.8550 -98.2175i\\
-      61.8550 +98.2175i\\
-      61.8550 -98.2175i\\
-      -2.6616 + 8.5630i\\
-      -2.6616 - 8.5630i\\
-      2.6616 + 8.5630i\\
-      2.6616 - 8.5630i\\
-    \end{bmatrix}
-  \]
-
-  But we choose only those poles which lie in left half plane. Hence
-  \[
-    poles_{reqd} =
-    \begin{bmatrix}
-      
-      -61.8550 +98.2175i\\
-      -61.8550 -98.2175i\\
-      -2.6616 + 8.5630i\\
-      -2.6616 - 8.5630i\\
-    \end{bmatrix}
-  \]
-
-  Now we again follow the same pattern in (h).
-  $$G_{reqd}(s) = s^4 + 129.033s^3 + 14211.667s^2 + 81666.667s + 1083333.333$$
-  $$A_{reqd} = \left(\begin{array}{cccc} -129.0333 & -14211.667 & -81666.66673 & -1083333.333 \\ 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \end{array}\right)$$
-
-  $$F_{reqd\_canonical} = first\_row(A_{ccf} - A_{reqd}) = \left(\begin{array}{cccc} 5.684340e{-14} & 2.5465851e{-11} & 6.257e{-10} & 1.39698e{-09} \end{array}\right)$$
-    
-  As in part (h), we again use the same $T$ matrix for transformation, and get $F$ as
-  $$F = F_{reqd\_canonical}T^{-1} = \left(\begin{array}{cccc} 5.684341e-14 & 2.54658e-11 & 6.25732e-10 & 1.3969e-09 \end{array}\right)$$  
 \end{answer}
 
-\begin{answer}m
-  The step and impulse responses are as follows:
-  \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{images/part_m_step_response}
-    \caption{Step Response for part (l)}
-    \label{fig:m.1}
-  \end{figure}
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{images/part_m_impulse_response}
-    \caption{Impulse Response for part (l)}
-    \label{fig:m.2}
-  \end{figure}
-\end{answer}
 
 
 \end{document}

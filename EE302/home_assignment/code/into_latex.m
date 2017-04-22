@@ -1,6 +1,5 @@
 function [] = into_latex(M)
-    for i=1:16
-        fprintf('%s
-    end
-    
+    [n11,d11] = numden(M);
+    M2 = n11/d11
+    latex(M2)
 end

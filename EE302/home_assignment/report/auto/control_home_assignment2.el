@@ -1,10 +1,17 @@
 (TeX-add-style-hook
- "control_home_assignment"
+ "control_home_assignment2"
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-package-options
                      '(("geometry" "a4paper" "tmargin=1in" "bmargin=1in") ("inputenc" "utf8")))
    (add-to-list 'LaTeX-verbatim-environments-local "lstlisting")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperimage")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperbaseurl")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "nolinkurl")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "url")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "path")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "lstinline")
+   (add-to-list 'LaTeX-verbatim-macros-with-delims-local "path")
    (add-to-list 'LaTeX-verbatim-macros-with-delims-local "lstinline")
    (TeX-run-style-hooks
     "latex2e"
@@ -34,11 +41,7 @@
     "eq:5"
     "eq:6"
     "eq:7"
-    "eq:8"
-    "fig:k.2"
-    "fig:k.3"
-    "fig:m.1"
-    "fig:m.2")
+    "eq:8")
    (LaTeX-add-environments
     '("answer" LaTeX-env-args ["argument"] 1)
     '("question" LaTeX-env-args ["argument"] 1)))

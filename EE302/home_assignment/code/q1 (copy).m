@@ -1,0 +1,17 @@
+s = sym('s');
+k_w = sym('k_w');
+k_s = sym('k_s');
+b = sym('b');
+m_1 = sym('m_1');
+m_2 = sym('m_2');
+A = [0 1 0 0; -(k_s + k_w)/m_1 -b/m_1 k_s/m_1 b/m_1; 0 0 0 1; k_s/m_2 b/m_2 -k_s/m_2 -b/m_2];
+B = [0;k_w/m_1; 0; 0];
+C = [0 0 1 0];
+ts = C*inv(s*eye(4) - A)*B;
+A_ccf = -[b*m_1 + b*m_2 k_s*m_1+k_s*m_2+k_w*m_2 b*k_w k_s*k_w]./(m_1*m_2);
+I = eye(3);
+I = [I zeros(3,1)];
+Ac = [A_ccf; I];
+pole1 = -11.7949 +10.0450i;
+pole2 = conj(pole1);
+tfs = poly([pole1,pole2,-60,-100]);
