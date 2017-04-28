@@ -104,8 +104,8 @@ rho_g_sym = 1 + rho*n1 * subs(n1,-s)/(d1 * subs(d1,-s));
 rho_g_tf = 1 + rho*G_0_tf * G_0_min_tf;
 [z1,p1,k1] = zpkdata(rho_g_tf,'v');
 pole_reqd = p1(real(p1) < 0);
-G_1 = poly(pole_reqd);
-[Areq_1, Breq_1,Creq_1,Dreq_1] = tf2ss(1,G_1);
+G_111 = poly(pole_reqd);
+[Areq_1, Breq_1,Creq_1,Dreq_1] = tf2ss(1,G_111);
 
 F_lqr1 = Ac_val - Areq_1;
 F_lqr_val = F_lqr1(1,:);

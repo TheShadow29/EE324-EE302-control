@@ -118,8 +118,11 @@
 
 \begin{answer}c
   From state space to Transfer function we use
-  $$G(s) = C(sI - A)^{-1}B$$
-  We get
+  $$G(s) = C(sI - A)^{-1}B_1$$
+  Using the expression of A in part (b) we get
+  $$sI - A = \left(\begin{array}{cccc} s & -1 & 0 & 0\\ \frac{k_{s} + k_{w}}{m_{1}} & s + \frac{b}{m_{1}} & -\frac{k_{s}}{m_{1}} & -\frac{b}{m_{1}}\\ 0 & 0 & s & -1\\ -\frac{k_{s}}{m_{2}} & -\frac{b}{m_{2}} & \frac{k_{s}}{m_{2}} & s + \frac{b}{m_{2}} \end{array}\right)$$
+
+  Taking the inverse of $(sI - A)$ and substituting the values $C$ and $B$ from part(b) we get
   $$G(s) = \frac{k_{w}\, \left(k_{s} + b\, s\right)}{m_{1}\, m_{2}\, s^4 + \left(b\, m_{1} + b\, m_{2}\right)\, s^3 + \left(k_{s}\, m_{1} + k_{s}\, m_{2} + k_{w}\, m_{2}\right)\, s^2 + b\, k_{w}\, s + k_{s}\, k_{w}}$$
   which is the same as that in part(a).
 
@@ -138,19 +141,21 @@
   \]
   where the characteristic equation is
   $$s^4 + a_3s^3 + a_2 s^2 + a_1 s + a_0 = 0$$
-  Controller Canonical Form of the matrix is
+  The denominator obtained in G(s) from part(c) is the transfer function of the system. Hence the characteristic equaiton is
+  $$X(s) = \frac{k_{s}\, k_{w} + b\, m_{1}\, s^3 + b\, m_{2}\, s^3 + k_{s}\, m_{1}\, s^2 + k_{s}\, m_{2}\, s^2 + k_{w}\, m_{2}\, s^2 + m_{1}\, m_{2}\, s^4 + b\, k_{w}\, s}{m_{1}\, m_{2}}$$
+  On comparing coefficients we get Controller Canonical Form of the matrix is
   $$A_{ccf} = \left(\begin{array}{cccc} -\frac{b\, m_{1} + b\, m_{2}}{m_{1}\, m_{2}} & -\frac{k_{s}\, m_{1} + k_{s}\, m_{2} + k_{w}\, m_{2}}{m_{1}\, m_{2}} & -\frac{b\, k_{w}}{m_{1}\, m_{2}} & -\frac{k_{s}\, k_{w}}{m_{1}\, m_{2}}\\ 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0 \end{array}\right)$$
 \end{answer}
 
 \begin{answer}e
-  From \ref{eq:1} we have
+  From (\ref{eq:1}) we have
   $$m_1\ddot{x} = k_s(y-x) + b(\dot{y} - \dot{x}) + k_w(r(t) - x) - f_{act}$$
   Rearranging the terms we get
   \begin{equation}
     \label{eq:7}
     \ddot{x} + \frac{b}{m_1}(\dot{x} - \dot{y}) + \frac{k_s}{m_1}(x - y) + \frac{k_w}{m_1}x = \frac{k_w}{m_1}r - \frac{f_{act}}{m_1}
   \end{equation}
-  From \ref{eq:2} we have
+  From (\ref{eq:2}) we have
   $$m_2\ddot{y} = k_s(x-y) + b(\dot{x} - \dot{y})$$
   Rearranging the terms we get
   \begin{equation}
@@ -177,6 +182,7 @@
   Both $D_1$ and $D_2$ turn out to be 0.  
 \end{answer}
 \begin{answer}g
+  To prove that the impulse responses are the same, it suffices to show that the $p(t)$ is the same for both the cases. \\
   The solution with $f_{act} = 0$ is
   $$p(t) = e^{At}p(0) + \int_0^t e^{A(t-\tau)}B_1r(\tau)d\tau$$
   Impulse response with initial condition $p(0) = 0$ is
@@ -186,7 +192,7 @@
   $$p(t) = e^{At}p(0) = e^{At}B_1$$
   Since $D_1$ and $D_2$ are zero, we get
   $$y = Cp$$
-  To prove that the impulse responses are the same, it suffices to show that the $p(t)$ is the same for both the cases. \\
+  
   Hence we have proved that the impulse response of the system with $f_{act} = 0$ and initial condition $p(0)=0$ is the same as response of the system with $f_{act} = 0$ and $r=0$ and initial condition $B_1$
 \end{answer}
 
@@ -342,7 +348,7 @@ $$ A_{state_feedback} =\ConverFracToDecimal  \left(\begin{array}{cccc} 0 & 1 & -
   $$F_{reqd\_canonical} = first\_row(A_{ccf} - A_{reqd}) = \left(\begin{array}{cccc} 5.684340e{-14} & 2.5465851e{-11} & 6.257e{-10} & 1.39698e{-09} \end{array}\right)$$
     
   As in part (h), we again use the same $T$ matrix for transformation, and get $F$ as
-  $$F = F_{reqd\_canonical}T^{-1} = \left(\begin{array}{cccc} 5.684341e-14 & 2.54658e-11 & 6.25732e-10 & 1.3969e-09 \end{array}\right)$$  
+  $$F = F_{reqd\_canonical}T^{-1} =\left(\begin{array}{cccc} -2.0283274e-09 & -5.42786434e-13 & 1.676380e-10 & 7.50870e-11 \end{array}\right)$$ 
 \end{answer}
 
 \begin{answer}m
